@@ -1,95 +1,97 @@
-# Cab Booking Platform 🚖
+# CabGo – Online Cab Booking Platform
 
-A full-stack cab booking application built using FastAPI, Python, PostgreSQL, React, and Next.js. The platform connects riders and drivers and provides ride booking, driver management, fare estimation, and live driver location tracking.
+## Overview
 
-## Project Overview
+CabGo is an online cab booking platform that connects riders and drivers through a web application. Users can register and log in according to their roles, book rides, manage ride requests, make online payments, and track driver locations.
 
-The Cab Booking Platform provides separate interfaces for riders, drivers, and administrators. It simplifies ride booking and management through a modern web application.
+The platform includes separate interfaces for riders, drivers, and administrators.
 
 ## Features
 
-### 1. User Management
-- User registration and login
-- Token-based authentication
-- Rider and driver account management
-- Driver profile management
-- Vehicle number management
+### Rider
+- User registration and login.
+- Book rides by selecting pickup and drop locations.
+- View ride details and ride history.
+- Track driver location during an active ride.
+- Make online payments using Razorpay.
 
-### 2. Ride Booking
-- Pickup and drop location selection
-- Geographic coordinates for pickup and drop
-- Estimated fare calculation
-- Ride request management
-- Ride status management
+### Driver
+- Driver registration and login.
+- View available ride requests.
+- Accept and manage rides.
+- Update ride status.
+- Share live GPS location during an active ride.
+- Manage driver profile and address proof details.
 
-### 3. Driver Management
-- Driver dashboard
-- Driver profile and vehicle information
-- Address proof document upload
-- Address proof verification status
-- Address proof rejection reason
+### Admin
+- Admin login and dashboard.
+- Manage platform users and rides.
+- Review driver address proof submissions.
+- View and manage payment information.
 
-### 4. Live Driver Location
-- GPS-based driver location updates
-- Latitude and longitude tracking
-- Last GPS update information
-- Driver location display on an interactive map
+## Technologies Used
 
-### 5. Payment Management
-- Payment-related API functionality
-- Payment database model
-- Ride and payment data management
+### Frontend
+- Next.js
+- React
+- TypeScript
+- Leaflet
+- React Leaflet
+- CSS
 
-### 6. Admin Management
-- Administrative dashboard
-- User and driver management
-- Driver verification information
-
-## Technology Stack
-
-| Component | Technology |
-|---|---|
-| Frontend | Next.js, React |
-| Styling | Tailwind CSS |
-| Backend | Python, FastAPI |
-| Database | PostgreSQL |
-| ORM | SQLAlchemy |
-| Migrations | Alembic |
-| API Documentation | Swagger UI |
-| Maps | React Leaflet |
-| Authentication | Token-based authentication |
+### Backend
+- Python
+- FastAPI
+- SQLAlchemy
+- Alembic
+- PostgreSQL
+- JWT Authentication
+- bcrypt and Passlib
+- Razorpay
+- Uvicorn
+- pytest
 
 ## Project Structure
 
 ```text
 cab-booking/
-│
 ├── backend/
 │   ├── alembic/
-│   │   └── versions/
 │   ├── app/
 │   │   ├── core/
 │   │   ├── models/
 │   │   ├── routers/
 │   │   ├── schemas/
-│   │   ├── utils/
-│   │   ├── main.py
-│   │   └── database.py
+│   │   └── utils/
 │   ├── tests/
-│   ├── requirements.txt
-│   └── alembic.ini
+│   ├── alembic.ini
+│   └── requirements.txt
 │
 ├── frontend/
 │   ├── app/
-│   ├── components/
+│   │   ├── admin/
+│   │   ├── book/
+│   │   ├── components/
+│   │   ├── dashboard/
+│   │   ├── driver/
+│   │   ├── login/
+│   │   └── register/
 │   ├── lib/
-│   └── package.json
+│   ├── public/
+│   ├── package.json
+│   └── README.md
 │
-├── .gitignore
 └── README.md
 ```
 
 ## Installation and Setup
+
+### Prerequisites
+
+- Python 3.10 or later
+- Node.js and npm
+- PostgreSQL
+- Git
 
 ### 1. Clone the Repository
 
@@ -100,38 +102,59 @@ cd cab-booking
 
 ### 2. Backend Setup
 
-```powershell
+Navigate to the backend directory:
+
+```bash
 cd backend
+```
 
+Create and activate a Python virtual environment:
+
+```bash
 python -m venv venv
+```
 
-venv\Scripts\activate
+On Windows PowerShell:
 
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+Install the backend dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 3. Database Configuration
+### 3. Configure Environment Variables
 
-1. Install PostgreSQL.
-2. Create a database for the application.
-3. Configure your database connection and secret keys using environment variables.
-4. Never upload your `.env` file or database credentials to GitHub.
+Create a `.env` file inside the backend directory.
 
-Run database migrations:
+Configure the required database connection, authentication, and payment settings according to the backend application configuration.
 
-```powershell
-python -m alembic upgrade head
+Use your own PostgreSQL database credentials and Razorpay test credentials.
+
+**Important:** Never commit `.env` files, passwords, secret keys, or private credentials to GitHub.
+
+### 4. Database Migration
+
+Make sure PostgreSQL is running and the configured database exists.
+
+Run the database migrations:
+
+```bash
+alembic upgrade head
 ```
 
-### 4. Start Backend
+### 5. Start the Backend Server
 
-From the backend directory:
+From the backend directory, run:
 
-```powershell
+```bash
 uvicorn app.main:app --reload
 ```
 
-Backend URL:
+Backend API:
 
 http://127.0.0.1:8000
 
@@ -139,58 +162,57 @@ API documentation:
 
 http://127.0.0.1:8000/docs
 
-### 5. Frontend Setup
+### 6. Frontend Setup
 
-Open another terminal:
+Open a new terminal and navigate to the frontend directory:
 
-```powershell
+```bash
 cd frontend
+```
 
+Install dependencies:
+
+```bash
 npm install
+```
 
+Create a `.env.local` file inside the frontend directory:
+
+```env
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
+```
+
+Start the frontend development server:
+
+```bash
 npm run dev
 ```
 
-Frontend URL:
+Open the application:
 
 http://localhost:3000
 
-## Testing
+## Running the Application
 
-The backend includes tests for user and ride functionality.
+Start both servers:
 
-From the backend directory:
+- Backend: `http://127.0.0.1:8000`
+- Frontend: `http://localhost:3000`
 
-```powershell
-pytest
-```
+The frontend communicates with the backend through API requests.
 
-## Security
+## Payment Integration
 
-- Keep database credentials in environment variables.
-- Do not commit API keys or secret tokens.
-- Keep private uploaded documents out of the public repository.
-- Use appropriate authentication and authorization.
+CabGo uses Razorpay for online payment processing. Test credentials should be configured before testing payment functionality.
 
-## Future Improvements
+## Live Location Tracking
 
-- Real-time ride updates
-- Automated driver matching
-- Production payment gateway integration
-- Ride history and ratings
-- Rider and driver notifications
-- Production deployment
+The application supports driver GPS location updates and rider-side tracking during active rides.
+
+## GitHub Repository
+
+[CabGo – Online Cab Booking Platform](https://github.com/Pratiksha-gui/cab-booking)
 
 ## Author
 
-**Pratiksha Gaonkar**
-
-GitHub: https://github.com/Pratiksha-gui
-
-## Project Repository
-
-https://github.com/Pratiksha-gui/cab-booking
-
----
-
-Developed as a full-stack Cab Booking Platform using Python, FastAPI, PostgreSQL, React, and Next.js.
+Developed as a cab booking platform project.
